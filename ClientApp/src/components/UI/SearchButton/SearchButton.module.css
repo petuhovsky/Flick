@@ -1,0 +1,11 @@
+.searchButton {
+    padding: 3px 10px;
+    color: black;
+    font-size: 14px;
+    background: linear-gradient(to bottom, white, gray);
+    border: 2px solid gray;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    margin-left: 10px;
+}

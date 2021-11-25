@@ -1,0 +1,25 @@
+.search {
+    height: 100vh;
+    width: 100vw;
+}
+
+.search_header_div {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    background: lightgray;
+    font-weight:bold;
+    text-align: center;
+    font-family: Arial;
+}
+
+.search_body {
+    padding: 30px;
+    font-family: Arial;
+}
+
+.search_loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

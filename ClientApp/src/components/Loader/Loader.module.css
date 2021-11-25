@@ -1,0 +1,19 @@
+.loader {
+    width: 50vw;
+    height: 50vh;
+    background-image: url("./images/logo.svg");
+    background-size: auto;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: rotate 2s infinite linear;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

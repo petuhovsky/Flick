@@ -1,0 +1,24 @@
+.image_div {
+    margin: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image_tags {
+    position: absolute;
+    top:0;
+    width: 100%;
+    padding: 5px;
+    background: linear-gradient(to bottom, rgba(0,0,0,.6) 0, transparent);
+    font-weight: bold;
+    color: white;
+
+    opacity: 0;
+    transition: opacity .3s;
+}
+
+.image {
+    cursor: pointer;
+}

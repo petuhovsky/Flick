@@ -1,0 +1,11 @@
+.search_form {
+    display: flex;
+    align-items: center;
+    flex-grow: initial;
+}
+
+.search_input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
