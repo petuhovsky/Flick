@@ -1,9 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import cl from "./SearchForm.module.css";
-import SearchInput from "../UI/SearchInput/SearchInput";
-import SearchButton from "../UI/SearchButton/SearchButton";
-import ClearButton from "../UI/ClearButton/ClearButton";
+import SearchInput from "./SearchInput/SearchInput";
+import SearchButton from "./SearchButton/SearchButton";
+import ClearButton from "./ClearButton/ClearButton";
 
 const SearchForm = ({initialQuery, onSubmit}) => {
     const input = useRef();

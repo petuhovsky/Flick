@@ -24,7 +24,7 @@ const Image = ({image, tooltipId}) => {
                  onMouseEnter={showTags} onMouseLeave={hideTags}
                  onClick={navigateToImageURL}
             />
-            <div ref={tagsElement} className={cl.image_tags}
+            <div ref={tagsElement} data-for={tooltipId} data-tip={image.title} className={cl.image_tags}
                 onMouseEnter={showTags} onMouseLeave={hideTags}
             >
                 {image.tags}

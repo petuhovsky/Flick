@@ -1,6 +1,15 @@
 import axios from "axios";
 
 export default class Controller {
+    static async searchImages(query) {
+        const request = new Request('searchImages');
+        const params = new URLSearchParams({ q: query });
+
+        const result = await fetch(request.url + '?' + params.toString());
+
+        return await result.json();
+    }
+
     static async getAllImagesFromPixabay(query) {
         return await axios.get(
             'https://pixabay.com/api/',

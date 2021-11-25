@@ -8,20 +8,18 @@ import {useFetching} from "../../hooks/useFetching";
 import Loader from "../../components/Loader/Loader";
 import cl from "./SearchPage.module.css";
 
-const SearchPage = (props) => {
+const SearchPage = () => {
     const [searchParams] = useSearchParams({q: ''});
 
     const navigate = useNavigate();
 
     const [_stQuery, set_stQuery] = useState(searchParams.get('q'));
     const [imageList, setImageList] = useState([]);
-    const [totalHits, setTotalHits] = useState(0);
 
     const [fetchImages, isLoading, loadingError] = useFetching(async query => {
         console.log(`fetchImages: query=${query}`);
 
-        const imageList = await Controller.getAllImagesFromPixabay(query);
-        //const imageList = await Controller.getAllImagesFromFlickr(query);
+        const imageList = await Controller.searchImages(query);
 
         //await new Promise((resolve, reject) => setTimeout(resolve, 2000));
         setImageList(imageList);

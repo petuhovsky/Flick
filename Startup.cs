@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Runtime.Caching;
 
 namespace Flick
 {
@@ -20,6 +21,14 @@ namespace Flick
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<FileCache>(
+                provider =>
+                    new FileCache("../FileCacheRoot", true, TimeSpan.FromMinutes(1))
+                    {
+                        PayloadWriteMode = FileCache.PayloadMode.RawBytes,
+                        PayloadReadMode = FileCache.PayloadMode.Filename
+                    }
+            );
 
             services.AddControllersWithViews();
 
