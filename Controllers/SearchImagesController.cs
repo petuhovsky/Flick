@@ -9,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Caching;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace Flick.Controllers
@@ -34,13 +35,21 @@ namespace Flick.Controllers
             {
                 var iQuery = HttpContext.Request.Query["q"];
 
-                var flsImageFromPixABay = loadFromPixABay(iQuery);
-                checkOrFillPreviewImagesCache(flsImageFromPixABay, "PixABay");
+                var taskPixABay = Task.Run(() => {
+                    IEnumerable<ViewImage> flsImageFromPixABay = loadFromPixABay(iQuery);
+                    checkOrFillPreviewImagesCache(flsImageFromPixABay, "PixABay");
+                    return flsImageFromPixABay;
+                });
 
-                var flsImageFromFlickr = loadFromFlickr(iQuery);
-                checkOrFillPreviewImagesCache(flsImageFromFlickr, "Flickr");
+                var taskFlickr = Task.Run(() => {
+                    IEnumerable<ViewImage> flsImageFromFlickr = loadFromFlickr(iQuery);
+                    checkOrFillPreviewImagesCache(flsImageFromFlickr, "Flickr");
+                    return flsImageFromFlickr;
+                });
 
-                var flsImage = flsImageFromPixABay.Concat(flsImageFromFlickr);
+                Task.WhenAll(new [] { taskPixABay, taskFlickr }).Wait();
+                
+                var flsImage = taskPixABay.Result.Concat(taskFlickr.Result);
 
                 return setPreviewURLToCach(flsImage);
             }
@@ -59,18 +68,18 @@ namespace Flick.Controllers
 
         private void checkOrFillPreviewImagesCache(IEnumerable<ViewImage> flsImage, string isWatermark)
         {
-            foreach (var fItem in flsImage)
-            {
-                if (!_cache.Contains(fItem.id))
-                {
-                    var fPreview = loadPreviewImage(fItem.previewURL);
-                    var fPreviewWithWatermark = drawWatermark(fPreview, isWatermark);
+            var flsImagesNeedLoad = flsImage.Where(img => !_cache.Contains(img.id));
 
-                    _cache.Set(new CacheItem(fItem.id, fPreviewWithWatermark), new CacheItemPolicy() { 
-                        SlidingExpiration = TimeSpan.FromMinutes(30)
-                    });
-                }
-            }
+            Parallel.ForEach(flsImagesNeedLoad, fItem =>
+            {
+                var fPreview = loadPreviewImage(fItem.previewURL);
+                var fPreviewWithWatermark = drawWatermark(fPreview, isWatermark);
+
+                _cache.Set(new CacheItem(fItem.id, fPreviewWithWatermark), new CacheItemPolicy()
+                {
+                    SlidingExpiration = TimeSpan.FromMinutes(30)
+                });
+            });
         }
 
         private byte[] loadPreviewImage(string iPreviewURL)
