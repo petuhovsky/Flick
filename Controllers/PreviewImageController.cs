@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.IO;
 using System.Runtime.Caching;
-using System.Threading;
 
 namespace Flick.Controllers
 {
